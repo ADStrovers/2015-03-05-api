@@ -1,6 +1,7 @@
 require "sinatra"
 require 'json'
 require "sqlite3"
+require "pry"
 
 DATABASE = SQLite3::Database.new("students.db")
 DATABASE.results_as_hash = true
@@ -23,6 +24,24 @@ get "/students/:id" do
 
   student_hash = student.to_hash
   student_hash.to_json
+end
+
+post "/students/:id/:key/:value" do
+  student = Student.find(params[:id])
+  
+  student.update(params[:key], params[:value])
+end
+
+get "/students/create/:name/:age/:github" do
+  @obj = Student.new(params)
+  @obj.insert
+end
+
+get "/students/drop-out/:id" do
+  dropout = Student.find(params[:id])
+  dropout.delete
+  
+  return "#{dropout.name} has dropped out of Class Cadejo."
 end
 
 # Afternoon Assignment:

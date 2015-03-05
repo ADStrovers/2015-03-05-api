@@ -40,6 +40,39 @@ class Student
     self.new(result)
   end
   
+  def delete
+    DATABASE.execute("DELETE FROM students WHERE id = #{id}")
+  end
+  
+  def update(key, value)
+    DATABASE.execute("UPDATE students SET #{key} = #{value} WHERE id = #{id}")
+    
+    # self.send("#{key}")
+  end
+  
+  def insert
+    attributes = []
+    values = []
+    
+    instance_variables.each do |i|
+      attributes << i.to_s.delete("@") if i != :@id
+    end
+    
+    attributes.each do |a|
+      value = self.send(a)
+      
+      if value.is_a?(Integer)
+        values << "#{value}"
+      else
+        values << "'#{value}'"
+      end
+    end
+    
+    DATABASE.execute("INSERT INTO students (#{attributes.join(", ")}) VALUES (#{values.join(", ")})")
+    
+    @id = DATABASE.last_insert_row_id
+  end
+  
   # Returns the object as a Hash.
   def to_hash
     {
