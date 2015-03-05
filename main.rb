@@ -37,11 +37,24 @@ get "/students/create/:name/:age/:github" do
   @obj.insert
 end
 
-get "/students/drop-out/:id" do
+get "/students/dropout/:id" do
   dropout = Student.find(params[:id])
   dropout.delete
   
   return "#{dropout.name} has dropped out of Class Cadejo."
+end
+
+get "/students/ultrawise/:id" do
+  student = Student.find(params[:id])
+  
+  a = student.ultra_wise?
+  return "#{a}"
+end
+
+get "/students/candrink/:id" do
+  student = Student.find(params[:id])
+  
+  "#{student.can_drink?}"
 end
 
 # Afternoon Assignment:

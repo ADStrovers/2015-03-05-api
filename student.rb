@@ -1,11 +1,13 @@
 class Student
-  attr_reader :id, :age, :name, :github
+  attr_reader :id, :age, :name, :github, :ultra_wise, :can_drink
   
   def initialize(options)
     @id = options["id"]
     @name = options["name"]
     @age = options["age"]
     @github = options["github"]
+    @ultra_wise = self.ultra_wise?
+    @can_drink = self.can_drink?
   end
   
   def can_drink?
@@ -79,7 +81,9 @@ class Student
       id: id,
       name: name,
       age: age,
-      github: github
+      github: "https://github.com/#{github}",
+      ultra_wise: ultra_wise,
+      can_drink: can_drink
     }
   end
 end
